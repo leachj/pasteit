@@ -1,4 +1,4 @@
-module leachj/pasteit
+module github.com/leachj/pasteit
 
 go 1.22.1
 
