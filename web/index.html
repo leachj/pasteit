@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PasteIt</title>
+    <script src="https://unpkg.com/htmx.org@2.0.0"></script>
+
+</head>
+<body>
+    <form hx-post="/paste/" hx-swap="outerHTML" hx-push-url="true">
+    <textarea id="text" name="text-area" rows="40" cols="200"></textarea>
+    <br/>
+    <button>PasteIt</button>
+    </form>
+</body>
+</html>
