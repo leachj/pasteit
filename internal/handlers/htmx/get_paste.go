@@ -1,18 +1,26 @@
 package handlers
 
 import (
+	"database/sql"
 	"log"
 	"net/http"
 	"text/template"
 )
 
-func GetPaste(store *map[string]string) http.HandlerFunc {
+func GetPaste(db *sql.DB) http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := r.PathValue("id")
 
-		body, ok := (*store)[id]
-		if !ok {
+		stmt, err := db.Prepare("select data from pastes where id = ?")
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer stmt.Close()
+
+		var data string
+		err = stmt.QueryRow(id).Scan(&data)
+		if err != nil {
 			w.WriteHeader(http.StatusNotFound)
 			log.Printf("Paste with id %s not found", id)
 			return
@@ -26,7 +34,7 @@ func GetPaste(store *map[string]string) http.HandlerFunc {
 		templateData := struct {
 			Data string
 		}{
-			Data: body,
+			Data: data,
 		}
 
 		w.WriteHeader(http.StatusOK)
